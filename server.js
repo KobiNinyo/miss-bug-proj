@@ -27,6 +27,13 @@ app.get('/api/bug/save', (req, res) => {
   res.json(savedBug)
 })
 
+app.get('/api/bug/:bugId', (req, res) => {
+    const bugId = req.params.bugId
+    const bug = bugService.getById(bugId)
+
+    res.json(bug)
+})
+
 app.listen(3030, () => {
   console.log('Server ready at port 3030')
 })
