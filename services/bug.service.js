@@ -17,8 +17,17 @@ const bugs = [
 
 export const bugService = {
     query,
+    save,
 }
 
 function query() {
     return bugs
+}
+function save(bug) {
+    bug._id = Date.now().toString()
+    bug.createdAt = Date.now()
+
+    bugs.push(bug)
+
+    return bug
 }
