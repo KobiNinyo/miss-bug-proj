@@ -27,6 +27,14 @@ app.get('/api/bug/save', (req, res) => {
   res.json(savedBug)
 })
 
+app.get('/api/bug/:bugId/remove', (req, res) => {
+    const bugId = req.params.bugId
+    const isRemoved = bugService.remove(bugId)
+
+    res.json(isRemoved)
+})
+
+
 app.get('/api/bug/:bugId', (req, res) => {
     const bugId = req.params.bugId
     const bug = bugService.getById(bugId)

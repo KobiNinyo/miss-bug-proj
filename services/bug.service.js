@@ -19,6 +19,7 @@ export const bugService = {
     query,
     save,
     getById,
+    remove,
 }
 
 function query() {
@@ -35,4 +36,12 @@ function save(bug) {
     bugs.push(bug)
 
     return bug
+}
+
+function remove(bugId) {
+    const bugIdx = bugs.findIndex(bug => bug._id === bugId)
+    if (bugIdx === -1) return false
+    
+    bugs.splice(bugIdx, 1)
+    return true   
 }
