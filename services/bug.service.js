@@ -17,8 +17,8 @@ const bugs = [
 
 export const bugService = {
     query,
-    save,
     getById,
+    save,
     remove,
 }
 
@@ -29,19 +29,27 @@ function getById(bugId) {
     return bugs.find(bug => bug._id === bugId)
 }
 
-function save(bug) {
-    bug._id = Date.now().toString()
-    bug.createdAt = Date.now()
-
-    bugs.push(bug)
-
-    return bug
-}
-
 function remove(bugId) {
     const bugIdx = bugs.findIndex(bug => bug._id === bugId)
     if (bugIdx === -1) return false
     
     bugs.splice(bugIdx, 1)
     return true   
+}
+
+function save(bug) {
+    if (bug._id) {
+        const bugIdx = bugs.findIndex(currBug => currBug._id === bug._id)
+
+        if (bugIdx === -1) return null
+
+        bugs.splice(bugIdx, 1, bug)
+    } else {
+        bug._id = Date.now().toString()
+        bug.createdAt = Date.now()
+
+        bugs.push(bug)
+    }
+
+    return bug
 }
