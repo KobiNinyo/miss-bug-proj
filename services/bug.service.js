@@ -24,9 +24,49 @@ export const bugService = {
   remove,
 }
 
-function query() {
-  return bugs
+function query(filterBy = {}) {
+  const {
+    txt = '',
+    minSeverity = 0,
+    labels = '',
+    sortBy = '',
+    sortDir = 1,
+    pageIdx = 0,
+  } = filterBy
+  let filteredBugs = [...bugs]
+
+  if (txt) {
+    filteredBugs = filteredBugs.filter((bug) =>
+      bug.title.toLowerCase().includes(txt.toLowerCase())
+    )
+  }
+  if (minSeverity) {
+    filteredBugs = filteredBugs.filter((bug) => bug.severity >= +minSeverity)
+  }
+  if (labels) {
+    const labelsToFilter = labels.split(',')
+
+    filteredBugs = filteredBugs.filter((bug) =>
+      bug.labels.some((label) => labelsToFilter.includes(label))
+    )
+  }
+  if (sortBy) {
+    filteredBugs.sort((bug1, bug2) => {
+      const value1 = bug1[sortBy]
+      const value2 = bug2[sortBy]
+
+      if (value1 > value2) return 1 * +sortDir
+      if (value1 < value2) return -1 * +sortDir
+      return 0
+    })
+  }
+
+  const PAGE_SIZE = 2
+  const startIdx = +pageIdx * PAGE_SIZE
+
+  return filteredBugs.slice(startIdx, startIdx + PAGE_SIZE)
 }
+
 function getById(bugId) {
   return bugs.find((bug) => bug._id === bugId)
 }

@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/bug', (req, res) => {
-  const bugs = bugService.query()
+  const bugs = bugService.query(req.query)
   res.json(bugs)
 })
 
